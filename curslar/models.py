@@ -4,6 +4,15 @@ from django.dispatch import receiver
 from django.utils.text import slugify
 
 
+class Contact(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    message = models.TextField()
+
+    is_solved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class Courses(models.Model):
     title = models.CharField(max_length=150, verbose_name='имя')
     month = models.IntegerField(default=0)
@@ -12,7 +21,7 @@ class Courses(models.Model):
     description = models.TextField()
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(blank=True,null=True,unique=True)
+    slug = models.SlugField(blank=True, null=True, unique=True)
 
     def __str__(self):
         return self.title
@@ -21,7 +30,7 @@ class Courses(models.Model):
         verbose_name = 'Kurs'
         verbose_name_plural = 'Kurslar'
 
-@receiver(pre_save, sender = Courses)
-def article_pre_save(sender,instance,*args,**kwargs):
-    instance.slug = slugify(instance.title)
 
+@receiver(pre_save, sender=Courses)
+def article_pre_save(sender, instance, *args, **kwargs):
+    instance.slug = slugify(instance.title)
